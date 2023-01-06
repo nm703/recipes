@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/react-splide/css';
+import { Link } from "react-router-dom";
 
 function Popular() {
 
     const [popular, setPopular] = useState([]);
-    
+
     //zove fju cim se pokrene strana, only run it when the component gets mounted
     useEffect(() => {
         getPopular();
@@ -44,19 +45,21 @@ function Popular() {
                         <h3>Popular Picks</h3>
 
                         <Splide options={{
-                            perPage: 3,
+                            perPage: 4,
                             arrows:false,
-                            paginations:false,
+                            pagination:false,
                             drag:'free',
-                            gap:"5rem",
+                            gap:"4rem",
                         }}>
                             {popular.map((recipe) => {
                                 return (
                                     <SplideSlide key={recipe.id}>
                                         <Card>
+                                            <Link to ={"/recipe/" + recipe.id}>
                                             <p>{recipe.title}</p>
                                             <img src={recipe.image} alt={recipe.title} />
                                             <Gradient/>
+                                            </Link>
                                         </Card>
                                     </SplideSlide>
                                 );

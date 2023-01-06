@@ -3,25 +3,26 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import '@splidejs/react-splide/css';
+import { Link } from 'react-router-dom';
 
 function Veggie() {
 
     const [veggie, setVeggie] = useState([]);
 
-     //zove fju cim se pokrene strana, only run it when the component gets mounted
-     useEffect(() => {
+    //zove fju cim se pokrene strana, only run it when the component gets mounted
+    useEffect(() => {
         getVeggie();
     }, []);
 
-    
+
 
     // async because we're waiting for the data
     const getVeggie = async () => {
 
         const check = localStorage.getItem("veggie");
-       
 
-        if(check){
+
+        if (check) {
             // getting the data back, prebaci iz string-a opet u array item
             setVeggie(JSON.parse(check));
         } else {
@@ -29,7 +30,7 @@ function Veggie() {
                 `https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9&tags=vegetarian`
             );
             const data = await api.json();
-            
+
 
             // making an array of data into a string and saving it that way
             localStorage.setItem("veggie", JSON.stringify(data.recipes));
@@ -38,34 +39,36 @@ function Veggie() {
         }
 
     };
-  return (
-    <div>
-    <Wrapper>
-        <h3>Veggie Picks</h3>
+    return (
+        <div>
+            <Wrapper>
+                <h3>Veggie Picks</h3>
 
-        <Splide options={{
-            perPage: 3,
-            arrows:false,
-            pagination:false,
-            drag:'free',
-            gap:"5rem",
-        }}>
-            {veggie.map((recipe) => {
-                return (
-                    <SplideSlide key={recipe.id}>
-                        <Card>
-                            <p>{recipe.title}</p>
-                            <img src={recipe.image} alt={recipe.title} />
-                            <Gradient/>
-                        </Card>
-                    </SplideSlide>
-                );
-            })}
-        </Splide>
-    </Wrapper>
+                <Splide options={{
+                    perPage: 3,
+                    arrows: false,
+                    pagination: false,
+                    drag: 'free',
+                    gap: "5rem",
+                }}>
+                    {veggie.map((recipe) => {
+                        return (
+                            <SplideSlide key={recipe.id}>
+                                <Card>
+                                    <Link to={"/recipe/" + recipe.id}>
+                                        <p>{recipe.title}</p>
+                                        <img src={recipe.image} alt={recipe.title} />
+                                        <Gradient />
+                                    </Link>
+                                </Card>
+                            </SplideSlide>
+                        );
+                    })}
+                </Splide>
+            </Wrapper>
 
-</div>
-  )
+        </div>
+    )
 }
 const Wrapper = styled.div`
 margin: 4rem 0rem;
